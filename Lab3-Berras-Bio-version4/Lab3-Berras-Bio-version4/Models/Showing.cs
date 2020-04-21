@@ -12,5 +12,6 @@ namespace Lab3_Berras_Bio_version4.Models
         public Movie Movie { get; set; }
         public int TotalSeats { get; set; } = 50;
         public int OccupiedSeats { get; set; }
+
     }
 }

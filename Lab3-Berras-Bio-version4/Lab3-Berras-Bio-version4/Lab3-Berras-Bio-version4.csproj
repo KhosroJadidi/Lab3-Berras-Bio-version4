@@ -5,4 +5,8 @@
     <RootNamespace>Lab3_Berras_Bio_version4</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
+
 </Project>

@@ -26,7 +26,7 @@ namespace Lab3_Berras_Bio_version4.Models
                     StartHour= new DateTime(2020,4,25,20,00,0),
                     Movie=mockMovieRepository.GetMovieById(2),
                     TotalSeats=50,
-                    OccupiedSeats=45
+                    OccupiedSeats=50
                 }
             };
 
