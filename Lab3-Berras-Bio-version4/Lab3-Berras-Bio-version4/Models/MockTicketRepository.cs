@@ -9,7 +9,7 @@ namespace Lab3_Berras_Bio_version4.Models
     {
         private readonly MockUserRepository mockUserRepository = new MockUserRepository();
         private readonly MockShowingRepository mockShowingRepository = new MockShowingRepository();
-        public IEnumerable<Ticket> users =>
+        public IEnumerable<Ticket> Alltickets =>
             new List<Ticket> 
             {
                 new Ticket
@@ -28,7 +28,7 @@ namespace Lab3_Berras_Bio_version4.Models
         
         public Ticket GetTicketById(int ticketId)
         {
-            return users.FirstOrDefault(ticket=>ticket.Id==ticketId);
+            return Alltickets.FirstOrDefault(ticket=>ticket.Id==ticketId);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Lab3_Berras_Bio_version4.Models
 {
     interface ITicketRepository
     {
-        IEnumerable<Ticket> users { get; }
+        IEnumerable<Ticket> Alltickets { get; }
         Ticket GetTicketById(int ticketId);
     }
 }
