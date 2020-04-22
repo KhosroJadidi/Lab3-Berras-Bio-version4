@@ -12,13 +12,16 @@ namespace Lab3_Berras_Bio_version4.Models
         {
             this.appDbContext = appDbContext;
         }
-        public IEnumerable<User> AllUsers 
-        {
-            get 
-            {
-                return appDbContext.Users;
-            }
-        }
+
+        public IEnumerable<User> AllUsers => appDbContext.Users;
+
+        //public IEnumerable<User> AllUsers 
+        //{
+        //    get 
+        //    {
+        //        return appDbContext.Users;
+        //    }
+        //}
 
         public User GetUserById(int userId)
         {

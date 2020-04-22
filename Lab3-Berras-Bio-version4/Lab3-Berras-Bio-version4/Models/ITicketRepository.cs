@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Lab3_Berras_Bio_version4.Models
 {
-    interface ITicketRepository
+    public interface ITicketRepository
     {
         IEnumerable<Ticket> Alltickets { get; }
         Ticket GetTicketById(int ticketId);

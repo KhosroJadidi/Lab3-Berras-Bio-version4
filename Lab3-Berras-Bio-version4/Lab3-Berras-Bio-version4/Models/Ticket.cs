@@ -8,7 +8,7 @@ namespace Lab3_Berras_Bio_version4.Models
     public class Ticket
     {
         public int Id { get; set; }
-        public User User { get; set; }
-        public Showing Showing { get; set; }
+        public virtual User User { get; set; }
+        public virtual Showing Showing { get; set; }
     }
 }

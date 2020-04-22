@@ -1,7 +1,7 @@
 ﻿@model HomeViewModel
 
     @foreach (var showing in Model.Showings)
-    {
+    {        
         <div class="col-sm-4 col-lg-4 col-md-4">
             <div class="thumbnail m-3">
                 <img src="@showing.Movie.ImageURL" alt="@showing.Movie.Title" />
@@ -27,8 +27,7 @@
                             All seats are booked!
                         </h4>
                     }
-                </div>
-                
+                </div>              
             </div>                       
         </div>
     }

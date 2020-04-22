@@ -2,7 +2,7 @@
 
 namespace Lab3_Berras_Bio_version4.Migrations
 {
-    public partial class test_migration : Migration
+    public partial class test_migration_3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

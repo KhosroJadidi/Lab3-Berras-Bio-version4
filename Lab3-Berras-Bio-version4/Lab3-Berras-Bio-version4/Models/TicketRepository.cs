@@ -13,13 +13,16 @@ namespace Lab3_Berras_Bio_version4.Models
         {
             this.appDbContext = appDbContext;
         }
-        public IEnumerable<Ticket> Alltickets 
-        {
-            get 
-            {
-                return appDbContext.Tickets;
-            }
-        }
+
+        public IEnumerable<Ticket> Alltickets => appDbContext.Tickets;
+
+        //public IEnumerable<Ticket> Alltickets 
+        //{
+        //    get 
+        //    {
+        //        return appDbContext.Tickets;
+        //    }
+        //}
 
         public Ticket GetTicketById(int ticketId)
         {

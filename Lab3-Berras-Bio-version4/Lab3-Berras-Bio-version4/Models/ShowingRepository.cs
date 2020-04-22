@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,13 +13,17 @@ namespace Lab3_Berras_Bio_version4.Models
         {
             this.appDbContext = appDbContext;
         }
-        public IEnumerable<Showing> Allshowings 
-        {
-            get 
-            {
-                return appDbContext.Showings;
-            }
-        }
+
+        //public IEnumerable<Showing> Allshowings => appDbContext.Showings;
+
+        public IEnumerable<Showing> Allshowings => appDbContext.Showings.Include(showing => showing.Movie).ToList();
+        //public IEnumerable<Showing> Allshowings 
+        //{
+        //    get 
+        //    {
+        //        return appDbContext.Showings;
+        //    }
+        //}
 
         public Showing GetShowingById(int showId)
         {

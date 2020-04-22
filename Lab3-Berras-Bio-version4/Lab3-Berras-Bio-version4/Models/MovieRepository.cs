@@ -12,13 +12,9 @@ namespace Lab3_Berras_Bio_version4.Models
         {
             this.appDbContext = appDbContext;
         }
-        public IEnumerable<Movie> AllMovies 
-        {
-            get 
-            {
-                return appDbContext.Movies;
-            }
-        }
+
+        public IEnumerable<Movie> AllMovies => appDbContext.Movies;
+        
 
         public Movie GetMovieById(int movieId)
         {

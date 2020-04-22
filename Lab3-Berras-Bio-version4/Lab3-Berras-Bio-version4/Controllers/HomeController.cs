@@ -12,10 +12,19 @@ namespace Lab3_Berras_Bio_version4.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IMovieRepository movieRepository;
         private readonly IShowingRepository showingRepository;
-        public HomeController(IShowingRepository showingRepository)
+        private readonly ITicketRepository ticketRepository;
+        private readonly IUserRepository userRepository;
+        public HomeController(IMovieRepository movieRepository,
+                                IShowingRepository showingRepository,
+                                ITicketRepository ticketRepository,
+                                IUserRepository userRepository)
         {
+            this.movieRepository = movieRepository;
             this.showingRepository = showingRepository;
+            this.ticketRepository = ticketRepository;
+            this.userRepository = userRepository;
         }
 
         public ViewResult Index()

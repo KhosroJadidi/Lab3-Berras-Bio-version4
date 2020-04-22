@@ -7,7 +7,7 @@ namespace Lab3_Berras_Bio_version4.Models
     {        
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-
+            
         }
 
         public DbSet<User> Users { get; set; }
@@ -15,7 +15,11 @@ namespace Lab3_Berras_Bio_version4.Models
         public DbSet<Showing> Showings { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
 
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            
+        }
         
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)

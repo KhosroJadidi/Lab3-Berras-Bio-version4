@@ -28,10 +28,10 @@ namespace Lab3_Berras_Bio_version4
                 (options=>options.UseSqlServer
                 (Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IMovieRepository, MovieRepository>();
-            services.AddScoped<IShowingRepository,ShowingRepository>();
-            services.AddScoped<ITicketRepository,TicketRepository>();
-            services.AddScoped<IUserRepository,UserRepository>();
-            services.AddControllersWithViews();
+            services.AddScoped<IShowingRepository, ShowingRepository>();
+            services.AddScoped<ITicketRepository, TicketRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddControllersWithViews();            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

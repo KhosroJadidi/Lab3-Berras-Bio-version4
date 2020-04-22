@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lab3_Berras_Bio_version4.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200421210055_test_migration_3")]
+    [Migration("20200422140420_test_migration_3")]
     partial class test_migration_3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,20 +37,6 @@ namespace Lab3_Berras_Bio_version4.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Movies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ImageURL = "https://m.media-amazon.com/images/M/MV5BMDFkYTc0MGEtZmNhMC00ZDIzLWFmNTEtODM1ZmRlYWMwMWFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
-                            Title = "shawshank redemption"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ImageURL = "https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SY1000_CR0,0,704,1000_AL_.jpg",
-                            Title = "The Godfather"
-                        });
                 });
 
             modelBuilder.Entity("Lab3_Berras_Bio_version4.Models.Showing", b =>
@@ -117,20 +103,6 @@ namespace Lab3_Berras_Bio_version4.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "Khosro@mail.com",
-                            Password = "1234"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "Pontus@mail.com",
-                            Password = "5678"
-                        });
                 });
 
             modelBuilder.Entity("Lab3_Berras_Bio_version4.Models.Showing", b =>

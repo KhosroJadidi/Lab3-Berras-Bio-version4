@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lab3_Berras_Bio_version4.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200421210028_test_migration_2")]
+    [Migration("20200422122942_test_migration_2")]
     partial class test_migration_2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -103,20 +103,6 @@ namespace Lab3_Berras_Bio_version4.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "Khosro@mail.com",
-                            Password = "1234"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "Pontus@mail.com",
-                            Password = "5678"
-                        });
                 });
 
             modelBuilder.Entity("Lab3_Berras_Bio_version4.Models.Showing", b =>
