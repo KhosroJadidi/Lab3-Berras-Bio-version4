@@ -17,7 +17,7 @@
                     <h4 class="float-left">
                         Open seats: @(showing.TotalSeats-showing.OccupiedSeats)
                         <br />
-                        <button>Book now!</button>
+                        <button asp-controller="Home" asp-action="BookTicket" asp-route-id="@showing.Id" formmethod="post">Book now!</button>
                         <br />
                     </h4>                       
                     }
