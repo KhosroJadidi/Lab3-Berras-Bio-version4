@@ -14,8 +14,8 @@ namespace Lab3_Berras_Bio_version4.Controllers
     {
         //private readonly IMovieRepository movieRepository;
         private readonly IShowingRepository showingRepository;
-        //private readonly ITicketRepository ticketRepository;
-        //private readonly IUserRepository userRepository;
+        private readonly ITicketRepository ticketRepository;
+        private readonly IUserRepository userRepository;
         public HomeController(IMovieRepository movieRepository,
                                 IShowingRepository showingRepository,
                                 ITicketRepository ticketRepository,
@@ -23,8 +23,8 @@ namespace Lab3_Berras_Bio_version4.Controllers
         {
             //this.movieRepository = movieRepository;
             this.showingRepository = showingRepository;
-            //this.ticketRepository = ticketRepository;
-            //this.userRepository = userRepository;
+            this.ticketRepository = ticketRepository;
+            this.userRepository = userRepository;
         }
 
         public ViewResult Index()
@@ -35,13 +35,20 @@ namespace Lab3_Berras_Bio_version4.Controllers
         }
 
         [HttpPost]
-        public ActionResult OnPostBookTicket(int id)
+        public ActionResult OnPostBookTicket(int userId, int showingId)
         {
             //get user
-            var showing = showingRepository.GetShowingById(id);
+            var user = userRepository.GetUserById(userId);
+
+            //get show
+            var showing = showingRepository.GetShowingById(showingId);
+
             //create ticket
             //https://stackoverflow.com/questions/30020892/taghelper-for-passing-route-values-as-part-of-a-link
-            return View(showing);
+
+            var ticket = new Ticket { Showing = showing, User = user };
+            ticketRepository.Alltickets.ToList().Add(ticket);
+            return View(ticket);
         }
     }
 }

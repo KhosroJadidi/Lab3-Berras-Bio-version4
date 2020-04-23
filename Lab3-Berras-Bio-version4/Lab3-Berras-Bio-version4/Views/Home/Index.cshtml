@@ -18,7 +18,7 @@
                         Open seats: @(showing.TotalSeats-showing.OccupiedSeats)
                         <br />                        
                     </h4>
-                    <form asp-action="OnPostBookTicket" asp-route-id="@showing.Id" method="post">
+                    <form asp-action="OnPostBookTicket" asp-route-userId="1" asp-route-showingId="@showing.Id" method="post">
                         <button>Book now!</button>
                     </form>                        
                     }

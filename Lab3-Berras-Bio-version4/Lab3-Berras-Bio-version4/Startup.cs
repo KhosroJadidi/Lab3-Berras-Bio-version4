@@ -50,7 +50,10 @@ namespace Lab3_Berras_Bio_version4
             {
                 endpoints.MapControllerRoute(
                     name:"default",
-                    pattern:"{controller=Home}/{action=Index}/{id?}");
+                    pattern:"{controller=Home}/" +
+                    "{action=Index}/" +
+                    "{userId?}/" +
+                    "{showingId?}");
             });
         }
     }
