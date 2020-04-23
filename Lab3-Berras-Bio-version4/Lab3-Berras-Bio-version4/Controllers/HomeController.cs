@@ -35,7 +35,7 @@ namespace Lab3_Berras_Bio_version4.Controllers
         }
 
         [HttpPost]
-        public ActionResult BookTicket(int id)
+        public ActionResult OnPostBookTicket(int id)
         {
             //get user
             var showing = showingRepository.GetShowingById(id);

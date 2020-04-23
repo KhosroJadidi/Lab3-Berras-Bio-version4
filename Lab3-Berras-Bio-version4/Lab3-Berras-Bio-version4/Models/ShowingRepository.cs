@@ -27,7 +27,9 @@ namespace Lab3_Berras_Bio_version4.Models
 
         public Showing GetShowingById(int showId)
         {
-            return appDbContext.Showings.FirstOrDefault(showing=>showing.Id==showId);
+            var a = appDbContext.Showings.Include(showing => showing.Movie).FirstOrDefault(showing => showing.Id == showId);
+            //return appDbContext.Showings.FirstOrDefault(showing => showing.Id == showId);
+            return a;
         }
     }
 }

@@ -16,10 +16,11 @@
                     {
                     <h4 class="float-left">
                         Open seats: @(showing.TotalSeats-showing.OccupiedSeats)
-                        <br />
-                        <button asp-controller="Home" asp-action="BookTicket" asp-route-id="@showing.Id" formmethod="post">Book now!</button>
-                        <br />
-                    </h4>                       
+                        <br />                        
+                    </h4>
+                    <form asp-action="OnPostBookTicket" asp-route-id="@showing.Id" method="post">
+                        <button>Book now!</button>
+                    </form>                        
                     }
                     else
                     {
