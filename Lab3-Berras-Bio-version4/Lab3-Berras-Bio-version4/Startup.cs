@@ -27,10 +27,6 @@ namespace Lab3_Berras_Bio_version4
             services.AddDbContext<AppDbContext>
                 (options=>options.UseSqlServer
                 (Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<IMovieRepository, MovieRepository>();
-            services.AddScoped<IShowingRepository, ShowingRepository>();
-            services.AddScoped<ITicketRepository, TicketRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddControllersWithViews();            
         }
 

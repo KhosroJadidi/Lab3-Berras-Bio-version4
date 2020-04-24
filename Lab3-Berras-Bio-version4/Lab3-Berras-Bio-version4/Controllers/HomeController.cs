@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Lab3_Berras_Bio_version4.Models;
 using Lab3_Berras_Bio_version4.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,42 +13,38 @@ namespace Lab3_Berras_Bio_version4.Controllers
 {
     public class HomeController : Controller
     {
-        //private readonly IMovieRepository movieRepository;
-        private readonly IShowingRepository showingRepository;
-        private readonly ITicketRepository ticketRepository;
-        private readonly IUserRepository userRepository;
-        public HomeController(IMovieRepository movieRepository,
-                                IShowingRepository showingRepository,
-                                ITicketRepository ticketRepository,
-                                IUserRepository userRepository)
+        private readonly AppDbContext appDbContext;
+        public HomeController(AppDbContext appDbContext)
         {
-            //this.movieRepository = movieRepository;
-            this.showingRepository = showingRepository;
-            this.ticketRepository = ticketRepository;
-            this.userRepository = userRepository;
+            this.appDbContext = appDbContext;
         }
 
         public ViewResult Index()
         {
             HomeViewModel homeViewModel = new HomeViewModel();
-            homeViewModel.Showings = showingRepository.Allshowings;
+            homeViewModel.Showings = appDbContext.Showings.
+                Include(showing=>showing.Movie).
+                ToList();
             return View(homeViewModel);
         }
 
         [HttpPost]
         public ActionResult OnPostBookTicket(int userId, int showingId)
         {
-            //get user
-            var user = userRepository.GetUserById(userId);
+            var user = appDbContext.Users.
+                FirstOrDefault(user=>user.Id==userId);
 
-            //get show
-            var showing = showingRepository.GetShowingById(showingId);
+            var showing = appDbContext.Showings.
+                Include(showing=>showing.Movie).
+                FirstOrDefault(showing=>showing.Id==showingId);
 
             //create ticket
             //https://stackoverflow.com/questions/30020892/taghelper-for-passing-route-values-as-part-of-a-link
 
             var ticket = new Ticket { Showing = showing, User = user };
-            ticketRepository.Alltickets.ToList().Add(ticket);
+            appDbContext.Tickets.
+                ToList().
+                Add(ticket);
             return View(ticket);
         }
     }
