@@ -13,28 +13,30 @@ namespace Lab3_Berras_Bio_version4.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly AppDbContext appDbContext;
+        private readonly AppDbContext _appDbContext;
         public HomeController(AppDbContext appDbContext)
         {
-            this.appDbContext = appDbContext;
+            this._appDbContext = appDbContext;
         }
 
         public ViewResult Index()
         {
-            HomeViewModel homeViewModel = new HomeViewModel();
-            homeViewModel.Showings = appDbContext.Showings.
-                Include(showing=>showing.Movie).
-                ToList();
+            var homeViewModel = new HomeViewModel
+            {
+                Showings = _appDbContext.Showings.
+                Include(showing => showing.Movie).
+                ToList()
+            };
             return View(homeViewModel);
         }
 
         [HttpPost]
         public ActionResult OnPostBookTicket(int userId, int showingId)
         {
-            var user = appDbContext.Users.
+            var user = _appDbContext.Users.
                 FirstOrDefault(user=>user.Id==userId);
 
-            var showing = appDbContext.Showings.
+            var showing = _appDbContext.Showings.
                 Include(showing=>showing.Movie).
                 FirstOrDefault(showing=>showing.Id==showingId);
 
@@ -42,8 +44,8 @@ namespace Lab3_Berras_Bio_version4.Controllers
             //https://stackoverflow.com/questions/30020892/taghelper-for-passing-route-values-as-part-of-a-link
 
             var ticket = new Ticket { Showing = showing, User = user };
-            appDbContext.Tickets.Add(ticket);            
-            appDbContext.SaveChanges();
+            _appDbContext.Tickets.Add(ticket);            
+            _appDbContext.SaveChanges();
             return View(ticket);
         }
     }
