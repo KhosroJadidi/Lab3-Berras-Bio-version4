@@ -9,7 +9,6 @@
         <br />
         <small>Quality Movies</small>
     </h1>
-
     <div class="row">
         <div class="row">
             @foreach (var showing in Model.Showings)
@@ -29,6 +28,8 @@
                                     Open seats: @(showing.TotalSeats - showing.OccupiedSeats)
                                     <br />
                                 </h4>
+                                <br />
+                                <br />
                                 <form asp-action="OnPostBookTicket" asp-route-userId="1" asp-route-showingId="@showing.Id" method="post">
                                     <button>Book now!</button>
                                 </form>
