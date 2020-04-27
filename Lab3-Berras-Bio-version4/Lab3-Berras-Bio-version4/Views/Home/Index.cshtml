@@ -1,34 +1,50 @@
 ﻿@model HomeViewModel
 
-    @foreach (var showing in Model.Showings)
-    {        
-        <div class="col-sm-4 col-lg-4 col-md-4">
-            <div class="thumbnail m-3">
-                <img src="@showing.Movie.ImageURL" alt="@showing.Movie.Title" />
-                <h2>@showing.Movie.Title</h2>
-                <div class="caption">
-                    <h3 class="float-left">
-                        Date:@showing.StartHour.ToString("dd/MM/yyyy")
-                        <br />
-                        Time:@showing.StartHour.ToString("HH:mm tt")
-                    </h3>
-                    @if (showing.TotalSeats - showing.OccupiedSeats > 0)
-                    {
-                    <h4 class="float-left">
-                        Open seats: @(showing.TotalSeats-showing.OccupiedSeats)
-                        <br />                        
-                    </h4>
-                    <form asp-action="OnPostBookTicket" asp-route-userId="1" asp-route-showingId="@showing.Id" method="post">
-                        <button>Book now!</button>
-                    </form>                        
-                    }
-                    else
-                    {
-                        <h4 class="float-left">
-                            All seats are booked!
-                        </h4>
-                    }
-                </div>              
-            </div>                       
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Page Heading -->
+    <h1 class="my-4">
+        Berras bio
+        <br />
+        <small>Quality Movies</small>
+    </h1>
+
+    <div class="row">
+        <div class="row">
+            @foreach (var showing in Model.Showings)
+            {
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="card h-100">
+                        <a href="#"><img class="card-img-top" src="@showing.Movie.ImageURL" alt="@showing.Movie.Title"></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="#">@showing.Movie.Title</a>
+                            </h4>
+                            <p class="card-text">Date:@showing.StartHour.ToString("dd/MM/yyyy")</p>
+                            <p class="card-text">Time:@showing.StartHour.ToString("HH:mm tt")</p>
+                            @if (showing.TotalSeats - showing.OccupiedSeats > 0)
+                            {
+                                <h4 class="float-left">
+                                    Open seats: @(showing.TotalSeats - showing.OccupiedSeats)
+                                    <br />
+                                </h4>
+                                <form asp-action="OnPostBookTicket" asp-route-userId="1" asp-route-showingId="@showing.Id" method="post">
+                                    <button>Book now!</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <h4 class="float-left">
+                                    All seats are booked!
+                                </h4>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
-    }
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->

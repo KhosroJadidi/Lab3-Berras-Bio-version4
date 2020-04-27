@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Westwind.AspNetCore.LiveReload;
 
 namespace Lab3_Berras_Bio_version4
 {
@@ -27,7 +28,11 @@ namespace Lab3_Berras_Bio_version4
             services.AddDbContext<AppDbContext>
                 (options=>options.UseSqlServer
                 (Configuration.GetConnectionString("DefaultConnection")));
-            services.AddControllersWithViews();            
+            services.AddControllersWithViews();
+            services.AddLiveReload
+                (config => config.LiveReloadEnabled = true);
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddMvc().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,10 +43,10 @@ namespace Lab3_Berras_Bio_version4
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseLiveReload();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
