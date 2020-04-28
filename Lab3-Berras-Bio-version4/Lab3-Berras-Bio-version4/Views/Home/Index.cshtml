@@ -1,5 +1,6 @@
 ﻿@model HomeViewModel
 
+
 <!-- Page Content -->
 <div class="container">
 
@@ -22,6 +23,7 @@
                             </h4>
                             <p class="card-text">Date:@showing.StartHour.ToString("dd/MM/yyyy")</p>
                             <p class="card-text">Time:@showing.StartHour.ToString("HH:mm tt")</p>
+                            <p class="card-text">Auditorium:@showing.Auditorium.Name</p>
                             @if (showing.Auditorium.AvailableSeats - showing.OccupiedSeats > 0)
                             {
                                 <h4 class="float-left">
@@ -30,10 +32,8 @@
                                 </h4>
                                 <br />
                                 <br />
-                                
-                                <form asp-action="OnPostBookTicket" asp-route-userId="1" asp-route-showingId="@showing.Id" method="post">
-                                    <button>Book now!</button>
-                                </form>
+                                <form asp-action="RedirectToOnPostBookTicket"  asp-route-showingId="@showing.Id" method="post">
+                                    <button>Book now!</button></form>
                             }
                             else
                             {

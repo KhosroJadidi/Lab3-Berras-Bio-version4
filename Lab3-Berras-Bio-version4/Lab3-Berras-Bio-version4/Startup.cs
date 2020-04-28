@@ -46,7 +46,7 @@ namespace Lab3_Berras_Bio_version4
                 options.Password.RequireDigit = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
-                options.Password.RequiredLength = 4;
+                options.Password.RequiredLength = 3;
                 options.Password.RequiredUniqueChars = 0;
             });
         }
@@ -70,7 +70,6 @@ namespace Lab3_Berras_Bio_version4
                     name:"default",
                     pattern:"{controller=Home}/" +
                     "{action=Index}/" +
-                    "{userId?}/" +
                     "{showingId?}");
                 endpoints.MapRazorPages();
             });
