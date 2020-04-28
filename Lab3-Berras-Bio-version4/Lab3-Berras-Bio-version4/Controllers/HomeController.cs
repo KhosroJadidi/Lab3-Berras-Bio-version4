@@ -7,6 +7,7 @@ using Lab3_Berras_Bio_version4.Models;
 using Lab3_Berras_Bio_version4.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -36,13 +37,24 @@ namespace Lab3_Berras_Bio_version4.Controllers
         [HttpPost]
         public ActionResult RedirectToOnPostBookTicket( int showingId )
         {
-            var name= new ClaimsPrincipal(User).Identity.Name;
+            //https://stackoverflow.com/questions/1257482/redirecttoaction-with-parameter
+
+            var name = new ClaimsPrincipal(User).Identity.Name;
             var userId = _appDbContext.Users.FirstOrDefault(user => user.UserName == name).Id;
-            
-            
-            return RedirectToAction(actionName:"OnPostBookTicket",
-                controllerName:"Ticket",
-                routeValues:new {userId= userId, showingId=showingId});
+
+
+            return RedirectToAction(actionName: "OnPostBookTicket",
+                controllerName: "Ticket",
+                routeValues: new { userId = userId, showingId = showingId });
+
+            //return RedirectToAction("OnPostBookTicket",
+            //    new RouteValueDictionary(
+            //        new
+            //        {
+            //            Controller = "Ticket",
+            //            Action = "OnPostBookTicket",
+            //            Id = userId
+            //        }));
         }
     }
 }
