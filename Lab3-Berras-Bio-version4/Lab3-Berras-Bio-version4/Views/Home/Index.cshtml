@@ -15,21 +15,22 @@
             {
                 <div class="col-lg-4 col-sm-6 mb-4">
                     <div class="card h-100">
-                        <a href="#"><img class="card-img-top" src="@showing.Movie.ImageURL" alt="@showing.Movie.Title"></a>
+                        <a href="@showing.Movie.ImdbPage" target="_blank"><img class="card-img-top" src="@showing.Movie.PosterLink" alt="@showing.Movie.Title"></a>
                         <div class="card-body">
                             <h4 class="card-title">
-                                <a href="#">@showing.Movie.Title</a>
+                                <a href="@showing.Movie.ImdbPage" target="_blank">@showing.Movie.Title</a>
                             </h4>
                             <p class="card-text">Date:@showing.StartHour.ToString("dd/MM/yyyy")</p>
                             <p class="card-text">Time:@showing.StartHour.ToString("HH:mm tt")</p>
-                            @if (showing.TotalSeats - showing.OccupiedSeats > 0)
+                            @if (showing.Auditorium.AvailableSeats - showing.OccupiedSeats > 0)
                             {
                                 <h4 class="float-left">
-                                    Open seats: @(showing.TotalSeats - showing.OccupiedSeats)
+                                    Open seats: @(showing.Auditorium.AvailableSeats - showing.OccupiedSeats)
                                     <br />
                                 </h4>
                                 <br />
                                 <br />
+                                
                                 <form asp-action="OnPostBookTicket" asp-route-userId="1" asp-route-showingId="@showing.Id" method="post">
                                     <button>Book now!</button>
                                 </form>

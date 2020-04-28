@@ -24,29 +24,30 @@ namespace Lab3_Berras_Bio_version4.Controllers
             var homeViewModel = new HomeViewModel
             {
                 Showings = _appDbContext.Showings.
-                Include(showing => showing.Movie).
-                ToList()
+                    Include(showing =>showing.Auditorium).
+                    Include(showing=>showing.Movie).
+                    ToList()
             };
             return View(homeViewModel);
         }
 
-        [HttpPost]
-        public ActionResult OnPostBookTicket(int userId, int showingId)
-        {
-            var user = _appDbContext.Users.
-                FirstOrDefault(user=>user.Id==userId);
+        //[HttpPost]
+        //public ActionResult OnPostBookTicket(int userId, int showingId)
+        //{
+        //    var user = _appDbContext.Users.
+        //        FirstOrDefault(user=>user.Id==userId);
 
-            var showing = _appDbContext.Showings.
-                Include(showing=>showing.Movie).
-                FirstOrDefault(showing=>showing.Id==showingId);
+        //    var showing = _appDbContext.Showings.
+        //        Include(showing=>showing.Movie).
+        //        FirstOrDefault(showing=>showing.Id==showingId);
 
-            //create ticket
-            //https://stackoverflow.com/questions/30020892/taghelper-for-passing-route-values-as-part-of-a-link
+        //    //create ticket
+        //    //https://stackoverflow.com/questions/30020892/taghelper-for-passing-route-values-as-part-of-a-link
 
-            var ticket = new Ticket { Showing = showing, User = user };
-            _appDbContext.Tickets.Add(ticket);            
-            _appDbContext.SaveChanges();
-            return View(ticket);
-        }
+        //    var ticket = new Ticket { Showing = showing, User = user };
+        //    _appDbContext.Tickets.Add(ticket);            
+        //    _appDbContext.SaveChanges();
+        //    return View(ticket);
+        //}
     }
 }

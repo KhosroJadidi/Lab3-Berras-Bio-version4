@@ -10,6 +10,7 @@ namespace Lab3_Berras_Bio_version4.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string ImageURL { get; set; }
+        public string ImdbPage { get; set; }
+        public string PosterLink { get; set; }
     }
 }
