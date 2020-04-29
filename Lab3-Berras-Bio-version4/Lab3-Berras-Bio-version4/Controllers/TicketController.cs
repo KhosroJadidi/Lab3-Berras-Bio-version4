@@ -37,6 +37,7 @@ namespace Lab3_Berras_Bio_version4.Controllers
             var ticket = new Ticket {Showing = showing, User = user};
 
             _appDbContext.Tickets.Add(ticket);
+            showing.OccupiedSeats++;
             _appDbContext.SaveChanges();
             return View(ticket);
         }
