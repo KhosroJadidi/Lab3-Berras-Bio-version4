@@ -32,8 +32,10 @@
                                 </h4>
                                 <br />
                                 <br />
-                                <form asp-action="RedirectToOnPostBookTicket"  asp-route-showingId="@showing.Id" method="post">
-                                    <button>Book now!</button></form>
+                                @*<form asp-controller="Ticket" asp-action="OnPostBookTicket" asp-route-userId="e38dd0b5-9e1d-45d2-ae2f-3331f373ebc0" asp-route-showingId="@showing.Id" method="post">*@
+                                <form asp-controller="Ticket" asp-action="OnPostBookTicket" asp-route-showingId="@showing.Id" method="post">
+                                    <button>Book now!</button>
+                                </form>
                             }
                             else
                             {
