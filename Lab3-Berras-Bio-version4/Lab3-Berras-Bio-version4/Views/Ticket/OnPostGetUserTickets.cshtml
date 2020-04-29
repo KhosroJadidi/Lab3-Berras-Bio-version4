@@ -1,0 +1,12 @@
+﻿@model TicketViewModel
+
+
+<h1>OnPostGetUserTickets</h1>
+
+@foreach (var ticket in Model.Tickets)
+{
+    <h1>@ticket.Showing</h1>
+    <h4>@ticket.Showing.StartHour</h4>
+    <h4>@ticket.Showing.Movie.Title</h4>
+    <h4>@ticket.Showing.Movie.ImdbPage</h4>
+}

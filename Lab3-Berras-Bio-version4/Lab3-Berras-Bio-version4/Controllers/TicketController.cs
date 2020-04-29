@@ -4,7 +4,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Lab3_Berras_Bio_version4.Models;
+using Lab3_Berras_Bio_version4.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,13 +22,17 @@ namespace Lab3_Berras_Bio_version4.Controllers
             _appDbContext = appDbContext;
         }
 
-        [Authorize]
-        [HttpPost]
-        public ActionResult OnPostBookTicket(int showingId)
+        private IdentityUser GetThisUser()
         {
-            var userName = new ClaimsPrincipal(User).Identity.Name;
-            var user = _appDbContext.Users.FirstOrDefault(user => user.UserName == userName);
+            return _appDbContext.Users.
+                FirstOrDefault(user => user.UserName == new ClaimsPrincipal(User).
+                    Identity.
+                    Name);
+        }
 
+        [HttpPost]
+        public ActionResult OnPostBookingPreview(int showingId)
+        {
             var showing = _appDbContext.Showings.Include(showing => showing.Movie)
                 .Include(showing => showing.Auditorium)
                 .FirstOrDefault(showingToSelect => showingToSelect.Id == showingId);
@@ -34,12 +40,27 @@ namespace Lab3_Berras_Bio_version4.Controllers
             //create ticket
             //https://stackoverflow.com/questions/30020892/taghelper-for-passing-route-values-as-part-of-a-link
 
-            var ticket = new Ticket {Showing = showing, User = user};
+            var ticket = new Ticket {Showing = showing, User = GetThisUser()};
 
-            _appDbContext.Tickets.Add(ticket);
-            showing.OccupiedSeats++;
-            _appDbContext.SaveChanges();
+            //_appDbContext.Tickets.Add(ticket);
+            //showing.OccupiedSeats++;
+            //_appDbContext.SaveChanges();
             return View(ticket);
         }
+
+        public ViewResult OnPostGetUserTickets()
+        {
+            var ticketViewModel = new TicketViewModel
+            {
+                Tickets = _appDbContext.Tickets.
+                    Include(ticket=>ticket.Showing).
+                    Include(ticket=>ticket.Showing.Movie).
+                    Where(ticket => ticket.User.UserName == GetThisUser().UserName)
+        };
+            //var bookings = _appDbContext.Tickets.Where(ticket => ticket.User.UserName == GetThisUser().UserName).ToList();
+            return View(ticketViewModel);
+        }
+
+
     }
 }
