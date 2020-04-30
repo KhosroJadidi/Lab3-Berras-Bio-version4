@@ -27,8 +27,8 @@ namespace Lab3_Berras_Bio_version4.Controllers
         {
             return _appDbContext.Users.
                 FirstOrDefault(user => user.UserName == new ClaimsPrincipal(User).
-                    Identity.
-                    Name);
+                Identity.
+                Name);
         }
 
         private bool UserCanBook()
@@ -53,12 +53,10 @@ namespace Lab3_Berras_Bio_version4.Controllers
                 Showing = showing,
                 User = GetThisUser()
             };
-#nullable enable
-            Ticket? nullTicket = null;
-#nullable disable
+
             return (UserCanBook())
                 ? View(ticket)
-                : View(nullTicket);
+                : View(null);
         }
 
         public ViewResult OnPostGetUserTickets()
@@ -70,10 +68,10 @@ namespace Lab3_Berras_Bio_version4.Controllers
                     Include(ticket=>ticket.Showing.Movie).
                     Where(ticket => ticket.User.UserName == GetThisUser().UserName)
             };
-            //var bookings = _appDbContext.Tickets.Where(ticket => ticket.User.UserName == GetThisUser().UserName).ToList();
-            return View(ticketViewModel);
+
+            return (UserCanBook())
+                ? View(ticketViewModel)
+                : View(null);
         }
-
-
     }
 }
