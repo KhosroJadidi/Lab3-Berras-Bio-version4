@@ -2,13 +2,26 @@
 
 @if (Model != null)
 {
-    <img src="@Model.Showing.Movie.PosterLink" />
-    <h1>@Model.Showing.Movie.Title</h1>
-    <h1>@Model.Showing.StartHour</h1>
-    <h1>@Model.Showing.Auditorium.Name</h1>
-    <h1>@Model.User.Email</h1>
+    <div class="row">
+        <div class="col-md-7">
+            <a href="#">
+                <img class="img-fluid rounded mb-3 mb-md-0 img-thumbnail " src="@Model.Showing.Movie.PosterLink" alt="">
+            </a>
+        </div>
+        <div class="col-md-5">
+            <h3>@Model.Showing.Movie.Title</h3>
+            <h3>@Model.Showing.StartHour.ToString("dd/MM/yyyy")</h3>
+            <h3>@Model.Showing.StartHour.ToString("HH:mm tt")</h3>
+            <form asp-controller="Ticket" asp-action="OnPostConfirmBooking" asp-route-showingId="@Model.Showing.Id" method="post">
+                <button class="btn-success">Confirm Booking</button></form>
+        </div>
+    </div>
 }
 else
 {
-    <h1>Model is null</h1>
+    <h1>Maximum number of bookings reached!</h1>
+    <h2>You may only have a maximum of 12 bookings at any given time.</h2>
+    <h3>Please remove some some bookings in order to proceed</h3>
+    <form asp-controller="Ticket" asp-action="OnPostGetUserTickets">
+        <button class="btn-success">My Bookings</button></form>
 }

@@ -35,13 +35,13 @@
                                 if (SignInManager.IsSignedIn(User))
                                 {
                                     <form asp-controller="Ticket" asp-action="OnPostBookingPreview" asp-route-showingId="@showing.Id" method="post">
-                                    <button>Book now!</button>
+                                    <button class="btn-success">Book now!</button>
                                 </form>
                                 }
                                 else
                                 {
                                     <form asp-area="Identity" asp-page="/Account/Login" >
-                                        <button>Log in to book!!</button>
+                                        <button class="btn-primary">Log in to book!!</button>
                                     </form>
                                 }
                             }

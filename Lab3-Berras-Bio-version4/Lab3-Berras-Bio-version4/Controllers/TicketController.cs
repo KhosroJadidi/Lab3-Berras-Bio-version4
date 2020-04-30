@@ -21,10 +21,10 @@ namespace Lab3_Berras_Bio_version4.Controllers
 
         private IdentityUser GetThisUser()
         {
-            return _appDbContext.Users.
-                FirstOrDefault(user => user.UserName == new ClaimsPrincipal(User).
-                Identity.
-                Name);
+            return _appDbContext.Users
+                .FirstOrDefault(user => user.UserName == new ClaimsPrincipal(User)
+                    .Identity
+                    .Name);
         }
 
         private bool UserCanBook()
@@ -36,7 +36,8 @@ namespace Lab3_Berras_Bio_version4.Controllers
         [HttpPost]
         public ActionResult OnPostBookingPreview(int showingId)
         {
-            var showing = _appDbContext.Showings.Include(showing => showing.Movie)
+            var showing = _appDbContext.Showings
+                .Include(showing => showing.Movie)
                 .Include(showing => showing.Auditorium)
                 .FirstOrDefault(showingToSelect => showingToSelect.Id == showingId);
 
@@ -58,13 +59,46 @@ namespace Lab3_Berras_Bio_version4.Controllers
         {
             var ticketViewModel = new TicketViewModel
             {
-                Tickets = _appDbContext.Tickets.
-                    Include(ticket => ticket.Showing).
-                    Include(ticket => ticket.Showing.Movie).
-                    Where(ticket => ticket.User.UserName == GetThisUser().UserName)
+                Tickets = _appDbContext.Tickets
+                    .Include(ticket => ticket.Showing)
+                    .Include(ticket => ticket.Showing.Movie)
+                    .Include(ticket => ticket.Showing.Auditorium)
+                    .Where(ticket => ticket.User.UserName == GetThisUser().UserName)
             };
 
             return View(ticketViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult OnPostConfirmBooking(int showingId)
+        {
+            var ticket = new Ticket
+            {
+                Showing = _appDbContext.Showings.FirstOrDefault(showing => showing.Id == showingId),
+                User = GetThisUser()
+            };
+            _appDbContext.Tickets.Add(ticket);
+            _appDbContext.Showings
+                .FirstOrDefault(showing => showing.Id == showingId)
+                .OccupiedSeats++;
+            _appDbContext.SaveChanges();
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult OnPostRemoveBooking(int ticketId)
+        {
+            var ticket = _appDbContext.Tickets
+                .Include(ticket => ticket.Showing)
+                .FirstOrDefault(ticket => ticket.Id == ticketId);
+            _appDbContext.Remove(ticket);
+            var showingOnTicket = _appDbContext.Showings
+                .FirstOrDefault(showing => showing.Id == ticket.Showing.Id);
+            _appDbContext.Showings
+                .FirstOrDefault(showing => showing.Id == showingOnTicket.Id)
+                .OccupiedSeats--;
+            _appDbContext.SaveChanges();
+            return View();
         }
     }
 }

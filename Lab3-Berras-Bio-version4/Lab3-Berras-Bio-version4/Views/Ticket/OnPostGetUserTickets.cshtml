@@ -1,12 +1,36 @@
 ﻿@model TicketViewModel
+<!-- Page Content -->
+<div class="container">
 
-<h1>OnPostGetUserTickets</h1>
-
-@foreach (var ticket in Model.Tickets)
-{
-    <h1>You have @Model.Tickets.Count() booking(s)</h1>
-    <h1>@ticket.Showing</h1>
-    <h4>@ticket.Showing.StartHour</h4>
-    <h4>@ticket.Showing.Movie.Title</h4>
-    <h4>@ticket.Showing.Movie.ImdbPage</h4>
-}
+    <!-- Page Heading -->
+    <h1 class="my-4">
+        Berras bio
+        <br />
+        <small>Quality Movies</small>
+    </h1>
+    <div class="row">
+        <div class="row">
+            @foreach (var ticket in Model.Tickets)
+            {
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="card h-100">
+                        <a href="@ticket.Showing.Movie.ImdbPage" target="_blank"><img class="card-img-top" src="@ticket.Showing.Movie.PosterLink" alt="@ticket.Showing.Movie.Title"></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="@ticket.Showing.Movie.ImdbPage" target="_blank">@ticket.Showing.Movie.Title</a>
+                            </h4>
+                            <p class="card-text">Date:@ticket.Showing.StartHour.ToString("dd/MM/yyyy")</p>
+                            <p class="card-text">Time:@ticket.Showing.StartHour.ToString("HH:mm tt")</p>
+                            <p class="card-text">Auditorium:@ticket.Showing.Auditorium.Name</p>
+                            <form asp-controller="Ticket" asp-action="OnPostRemoveBooking" asp-route-ticketId="@ticket.Id" method="post">
+                                <button class="btn-danger">Remove Booking</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
