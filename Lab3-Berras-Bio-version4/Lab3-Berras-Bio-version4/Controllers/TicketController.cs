@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -30,9 +31,16 @@ namespace Lab3_Berras_Bio_version4.Controllers
                     Name);
         }
 
+        private bool UserCanBook()
+        {
+            return (_appDbContext.Tickets.Where(ticket => ticket.User.UserName == GetThisUser().UserName)
+                .Count() < 12);
+        }
+
         [HttpPost]
         public ActionResult OnPostBookingPreview(int showingId)
         {
+            
             var showing = _appDbContext.Showings.Include(showing => showing.Movie)
                 .Include(showing => showing.Auditorium)
                 .FirstOrDefault(showingToSelect => showingToSelect.Id == showingId);
@@ -40,12 +48,17 @@ namespace Lab3_Berras_Bio_version4.Controllers
             //create ticket
             //https://stackoverflow.com/questions/30020892/taghelper-for-passing-route-values-as-part-of-a-link
 
-            var ticket = new Ticket {Showing = showing, User = GetThisUser()};
-
-            //_appDbContext.Tickets.Add(ticket);
-            //showing.OccupiedSeats++;
-            //_appDbContext.SaveChanges();
-            return View(ticket);
+            var ticket = new Ticket
+            {
+                Showing = showing,
+                User = GetThisUser()
+            };
+#nullable enable
+            Ticket? nullTicket = null;
+#nullable disable
+            return (UserCanBook())
+                ? View(ticket)
+                : View(nullTicket);
         }
 
         public ViewResult OnPostGetUserTickets()
@@ -56,7 +69,7 @@ namespace Lab3_Berras_Bio_version4.Controllers
                     Include(ticket=>ticket.Showing).
                     Include(ticket=>ticket.Showing.Movie).
                     Where(ticket => ticket.User.UserName == GetThisUser().UserName)
-        };
+            };
             //var bookings = _appDbContext.Tickets.Where(ticket => ticket.User.UserName == GetThisUser().UserName).ToList();
             return View(ticketViewModel);
         }

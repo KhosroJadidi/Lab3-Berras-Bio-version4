@@ -1,11 +1,14 @@
 ﻿@model Ticket
 
-<img src="@Model.Showing.Movie.PosterLink" />
-<h1>@Model.Showing.Movie.Title</h1>
-<h1>@Model.Showing.StartHour</h1>
-<h1>@Model.Showing.Auditorium.Name</h1>
-
-<h1>@Model.User.Email</h1>
-
-
-
+@if (Model != null)
+{
+    <img src="@Model.Showing.Movie.PosterLink" />
+    <h1>@Model.Showing.Movie.Title</h1>
+    <h1>@Model.Showing.StartHour</h1>
+    <h1>@Model.Showing.Auditorium.Name</h1>
+    <h1>@Model.User.Email</h1>
+}
+else
+{
+    <h1>Model is null</h1>
+}

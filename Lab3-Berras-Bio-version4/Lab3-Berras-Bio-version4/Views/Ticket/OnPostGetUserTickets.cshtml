@@ -5,6 +5,7 @@
 
 @foreach (var ticket in Model.Tickets)
 {
+    <h1>You have @Model.Tickets.Count() booking(s)</h1>
     <h1>@ticket.Showing</h1>
     <h4>@ticket.Showing.StartHour</h4>
     <h4>@ticket.Showing.Movie.Title</h4>
