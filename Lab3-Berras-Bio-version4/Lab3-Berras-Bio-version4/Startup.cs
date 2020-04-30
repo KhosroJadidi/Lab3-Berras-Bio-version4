@@ -72,11 +72,6 @@ namespace Lab3_Berras_Bio_version4
                     pattern:"{controller=Home}/" +
                     "{action=Index}/" +
                     "{showingId?}");
-                endpoints.MapControllerRoute(
-                    name: "redirectToTicketController",
-                    pattern: "{controller=Ticket}/" +
-                             "{action=OnPostBookTicket}/" +
-                             "{showingId?}");
                 endpoints.MapRazorPages();
             });
         }
