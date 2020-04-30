@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Lab3_Berras_Bio_version4.Models;
+﻿using Lab3_Berras_Bio_version4.Models;
 using Lab3_Berras_Bio_version4.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Security.Claims;
 
 namespace Lab3_Berras_Bio_version4.Controllers
 {
@@ -33,14 +29,13 @@ namespace Lab3_Berras_Bio_version4.Controllers
 
         private bool UserCanBook()
         {
-            return (_appDbContext.Tickets.Where(ticket => ticket.User.UserName == GetThisUser().UserName)
-                .Count() < 12);
+            return _appDbContext.Tickets.Count(ticket => ticket.User.UserName == GetThisUser().UserName)
+                    < 12;
         }
 
         [HttpPost]
         public ActionResult OnPostBookingPreview(int showingId)
         {
-            
             var showing = _appDbContext.Showings.Include(showing => showing.Movie)
                 .Include(showing => showing.Auditorium)
                 .FirstOrDefault(showingToSelect => showingToSelect.Id == showingId);
@@ -64,14 +59,12 @@ namespace Lab3_Berras_Bio_version4.Controllers
             var ticketViewModel = new TicketViewModel
             {
                 Tickets = _appDbContext.Tickets.
-                    Include(ticket=>ticket.Showing).
-                    Include(ticket=>ticket.Showing.Movie).
+                    Include(ticket => ticket.Showing).
+                    Include(ticket => ticket.Showing.Movie).
                     Where(ticket => ticket.User.UserName == GetThisUser().UserName)
             };
 
-            return (UserCanBook())
-                ? View(ticketViewModel)
-                : View(null);
+            return View(ticketViewModel);
         }
     }
 }
