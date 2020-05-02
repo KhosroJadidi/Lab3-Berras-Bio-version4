@@ -8,6 +8,11 @@
         <br />
         <small>Quality Movies</small>
     </h1>
+    <h2>
+        You currently have @Model.Tickets.Count() bookings.
+        <br/>
+        <small>You may have @(12-@Model.Tickets.Count()) more bookings.</small>
+    </h2>
     <div class="row">
         <div class="row">
             @foreach (var ticket in Model.Tickets)

@@ -1,10 +1,12 @@
-﻿using Lab3_Berras_Bio_version4.Models;
+﻿using System;
+using Lab3_Berras_Bio_version4.Models;
 using Lab3_Berras_Bio_version4.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Claims;
 
 namespace Lab3_Berras_Bio_version4.Controllers
@@ -36,23 +38,25 @@ namespace Lab3_Berras_Bio_version4.Controllers
         [HttpPost]
         public ActionResult OnPostBookingPreview(int showingId)
         {
-            var showing = _appDbContext.Showings
-                .Include(showing => showing.Movie)
-                .Include(showing => showing.Auditorium)
-                .FirstOrDefault(showingToSelect => showingToSelect.Id == showingId);
+            if (UserCanBook())
+            {
+                var showing = _appDbContext.Showings
+                    .Include(showing => showing.Movie)
+                    .Include(showing => showing.Auditorium)
+                    .FirstOrDefault(showingToSelect => showingToSelect.Id == showingId);
 
+                var ticket = new Ticket
+                {
+                    Showing = showing,
+                    User = GetThisUser()
+                };
+
+                return View(ticket);
+            }
+            return View(null);
+            
             //create ticket
             //https://stackoverflow.com/questions/30020892/taghelper-for-passing-route-values-as-part-of-a-link
-
-            var ticket = new Ticket
-            {
-                Showing = showing,
-                User = GetThisUser()
-            };
-
-            return (UserCanBook())
-                ? View(ticket)
-                : View(null);
         }
 
         public ViewResult OnPostGetUserTickets()
@@ -70,8 +74,9 @@ namespace Lab3_Berras_Bio_version4.Controllers
         }
 
         [HttpPost]
-        public ActionResult OnPostConfirmBooking(int showingId)
+        public ActionResult OnPostConfirmBooking(int showingId,int quantity)
         {
+            var test = quantity;
             var ticket = new Ticket
             {
                 Showing = _appDbContext.Showings.FirstOrDefault(showing => showing.Id == showingId),
