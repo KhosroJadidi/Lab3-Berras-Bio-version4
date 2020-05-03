@@ -1,0 +1,43 @@
+﻿@model TicketViewModel
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Page Heading -->
+    <h2>
+        You currently have @Model.Tickets.Count() bookings.
+        <br/>
+        <small>You may have @(12-@Model.Tickets.Count()) more bookings.</small>
+    </h2>
+        <partial name="_OrderByForUser"/>
+    <div class="row">
+        <div class="row">
+            @foreach (var ticket in Model.Tickets)
+            {
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="card h-100">
+                        <a href="@ticket.Showing.Movie.ImdbPage" target="_blank"><img class="card-img-top" src="@ticket.Showing.Movie.PosterLink" alt="@ticket.Showing.Movie.Title"></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="@ticket.Showing.Movie.ImdbPage" target="_blank">@ticket.Showing.Movie.Title</a>
+                            </h4>
+                            <p class="card-text">Date:@ticket.Showing.StartHour.ToString("dd/MM/yyyy")</p>
+                            <p class="card-text">Time:@ticket.Showing.StartHour.ToString("HH:mm tt")</p>
+                            <p class="card-text">Auditorium:@ticket.Showing.Auditorium.Name</p>
+                            <h4 class="float-left">
+                                Open seats: @(ticket.Showing.Auditorium.AvailableSeats - ticket.Showing.OccupiedSeats)
+                                <br/>
+                            </h4>
+                            <br/>
+                            <br/>
+                            <form asp-controller="Ticket" asp-action="OnPostRemoveBooking" asp-route-ticketId="@ticket.Id" method="post">
+                                <button class="btn-danger">Remove Booking</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->

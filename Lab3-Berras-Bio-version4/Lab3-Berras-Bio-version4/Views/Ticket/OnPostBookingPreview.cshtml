@@ -1,0 +1,35 @@
+﻿@model Preview
+
+
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-md-7">
+            <a href="#">
+                <img class="img-fluid rounded mb-3 mb-md-0 img-thumbnail " src="@Model.Showing.Movie.PosterLink" alt="">
+            </a>
+        </div>
+        <div class="col-md-5">
+            <h3>@Model.Showing.Movie.Title</h3>
+            <h3>@Model.Showing.StartHour.ToString("dd/MM/yyyy")</h3>
+            <h3>@Model.Showing.StartHour.ToString("HH:mm tt")</h3>
+            <form asp-controller="Ticket" asp-action="OnPostConfirmBooking" asp-route-showingId="@Model.Showing.Id"  method="post">
+                <label>How Many?</label>
+                <input name="quantity" type="number" min="1" max="@Model.BookableSeats" value="1"/>
+                <br/>
+                <button class="btn-success m-1">Confirm Booking</button>
+            </form>
+            <form asp-controller="Home" asp-action="Index">
+                <button class="btn-danger m-1">Cancel</button>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <h1>Maximum number of bookings reached!</h1>
+    <h2>You may only have a maximum of 12 bookings at any given time.</h2>
+    <h3>Please remove some some bookings in order to proceed</h3>
+    <form asp-controller="Ticket" asp-action="OnPostGetUserTickets">
+        <button class="btn-success">My Bookings</button></form>
+}

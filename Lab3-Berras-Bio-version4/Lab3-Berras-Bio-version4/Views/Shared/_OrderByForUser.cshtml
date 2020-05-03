@@ -1,0 +1,12 @@
+﻿<ul class="pagination justify-content-center">
+    <li class="page-item">
+        <form asp-controller="Ticket" asp-action="OnPostGetUserTickets" asp-route-orderBy="date">
+            <button class="btn-info m-1">Order By Date</button>
+        </form>
+    </li>
+    <li class="page-item">
+        <form asp-controller="Ticket" asp-action="OnPostGetUserTickets" asp-route-orderBy="seats">
+            <button class="btn-info m-1">Order By Free Seats</button>
+        </form>
+    </li>
+</ul>

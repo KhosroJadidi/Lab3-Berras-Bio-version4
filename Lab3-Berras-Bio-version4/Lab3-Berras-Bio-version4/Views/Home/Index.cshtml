@@ -1,0 +1,55 @@
+﻿@model HomeViewModel
+<!-- Page Content -->
+<div class="container">
+    <!-- Page Heading -->
+        <partial name="_OrderByForIndex"/>
+    <div class="row">
+        <div class="row">
+            @foreach (var showing in @Model.Showings)
+            {
+                <div class="col-lg-4 col-sm-6 mb-4">
+                    <div class="card h-100">
+                        <a href="@showing.Movie.ImdbPage" target="_blank"><img class="card-img-top" src="@showing.Movie.PosterLink" alt="@showing.Movie.Title"></a>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="@showing.Movie.ImdbPage" target="_blank">@showing.Movie.Title</a>
+                            </h4>
+                            <p class="card-text">Date:@showing.StartHour.ToString("dd/MM/yyyy")</p>
+                            <p class="card-text">Time:@showing.StartHour.ToString("HH:mm tt")</p>
+                            <p class="card-text">Auditorium:@showing.Auditorium.Name</p>
+                            @if (showing.Auditorium.AvailableSeats - showing.OccupiedSeats > 0)
+                            {
+                                <h4 class="float-left">
+                                    Open seats: @(showing.Auditorium.AvailableSeats - showing.OccupiedSeats)
+                                    <br/>
+                                </h4>
+                                <br/>
+                                <br/>
+                                if (SignInManager.IsSignedIn(User))
+                                {
+                                    <form asp-controller="Ticket" asp-action="OnPostBookingPreview" asp-route-showingId="@showing.Id" method="post">
+                                        <button class="btn-success">Book now!</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form asp-area="Identity" asp-page="/Account/Login">
+                                        <button class="btn-primary">Log in to book!!</button>
+                                    </form>
+                                }
+                            }
+                            else
+                            {
+                                <h4 class="float-left">
+                                    All seats are booked!
+                                </h4>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /.container -->
