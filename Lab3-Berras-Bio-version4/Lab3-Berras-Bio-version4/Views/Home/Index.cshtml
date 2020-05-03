@@ -1,20 +1,9 @@
 ﻿@model HomeViewModel
-@{
-    var shows = @Model.Showings;
-    var orderedShows=shows.OrderByDescending(showing => showing.Auditorium.AvailableSeats-showing.OccupiedSeats);
-}
-
 <!-- Page Content -->
 <div class="container">
-
     <!-- Page Heading -->
-    <h1 class="my-4">
-        Berras bio
-        <br />
-        <small>Quality Movies</small>
-    </h1>
-    <div class="row">
         <partial name="_OrderByForIndex"/>
+    <div class="row">
         <div class="row">
             @foreach (var showing in @Model.Showings)
             {
