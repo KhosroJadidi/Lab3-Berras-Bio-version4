@@ -1,12 +1,10 @@
-﻿using System;
-using Lab3_Berras_Bio_version4.Models;
+﻿using Lab3_Berras_Bio_version4.Models;
 using Lab3_Berras_Bio_version4.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Claims;
 
 namespace Lab3_Berras_Bio_version4.Controllers
@@ -21,42 +19,40 @@ namespace Lab3_Berras_Bio_version4.Controllers
             _appDbContext = appDbContext;
         }
 
-        private IdentityUser GetThisUser()
-        {
-            return _appDbContext.Users
-                .FirstOrDefault(user => user.UserName == new ClaimsPrincipal(User)
-                    .Identity
-                    .Name);
-        }
-
-        private bool UserCanBook()
-        {
-            return _appDbContext.Tickets.Count(ticket => ticket.User.UserName == GetThisUser().UserName)
-                    < 12;
-        }
-
         [HttpPost]
         public ActionResult OnPostBookingPreview(int showingId)
         {
-            if (UserCanBook())
+            var showPreview = GetPreviewById(showingId);
+            if (showPreview.BookableSeats>0)
             {
-                var showing = _appDbContext.Showings
-                    .Include(showing => showing.Movie)
-                    .Include(showing => showing.Auditorium)
-                    .FirstOrDefault(showingToSelect => showingToSelect.Id == showingId);
-
-                var ticket = new Ticket
+                var preview = new Preview
                 {
-                    Showing = showing,
-                    User = GetThisUser()
+                    Showing = showPreview.Showing,
+                    User = GetThisUser(),
+                    BookableSeats=showPreview.BookableSeats
                 };
-
-                return View(ticket);
+                return View(preview);
             }
             return View(null);
-            
-            //create ticket
-            //https://stackoverflow.com/questions/30020892/taghelper-for-passing-route-values-as-part-of-a-link
+        }
+
+        [HttpPost]
+        public ActionResult OnPostConfirmBooking(int showingId, int quantity)
+        {
+            for (int i = 0; i < quantity; i++)
+            {
+                var ticket = new Ticket
+                {
+                    Showing = GetPreviewById(showingId).Showing,
+                    User = GetThisUser()
+                };
+                _appDbContext.Tickets.Add(ticket);
+                _appDbContext.Showings
+                    .FirstOrDefault(showing => showing.Id == showingId)
+                    .OccupiedSeats++;
+            }
+            _appDbContext.SaveChanges();
+            return View();
         }
 
         public ViewResult OnPostGetUserTickets()
@@ -69,25 +65,7 @@ namespace Lab3_Berras_Bio_version4.Controllers
                     .Include(ticket => ticket.Showing.Auditorium)
                     .Where(ticket => ticket.User.UserName == GetThisUser().UserName)
             };
-
             return View(ticketViewModel);
-        }
-
-        [HttpPost]
-        public ActionResult OnPostConfirmBooking(int showingId,int quantity)
-        {
-            var test = quantity;
-            var ticket = new Ticket
-            {
-                Showing = _appDbContext.Showings.FirstOrDefault(showing => showing.Id == showingId),
-                User = GetThisUser()
-            };
-            _appDbContext.Tickets.Add(ticket);
-            _appDbContext.Showings
-                .FirstOrDefault(showing => showing.Id == showingId)
-                .OccupiedSeats++;
-            _appDbContext.SaveChanges();
-            return View();
         }
 
         [HttpPost]
@@ -104,6 +82,32 @@ namespace Lab3_Berras_Bio_version4.Controllers
                 .OccupiedSeats--;
             _appDbContext.SaveChanges();
             return View();
+        }
+
+        private IdentityUser GetThisUser()
+        {
+            return _appDbContext.Users
+                .FirstOrDefault(user => user.UserName == new ClaimsPrincipal(User)
+                    .Identity
+                    .Name);
+        }
+        
+        private Preview GetPreviewById(int showingId)
+        {
+            var thisShowing = _appDbContext.Showings
+                .Include(showing => showing.Movie)
+                .Include(showing => showing.Auditorium)
+                .FirstOrDefault(showingToSelect => showingToSelect.Id == showingId);
+            var availableSeats = thisShowing.Auditorium.AvailableSeats - thisShowing.OccupiedSeats;
+            var userOpenSlots =
+                12 - _appDbContext.Tickets.Count(ticket => ticket.User.UserName == GetThisUser().UserName);
+            var bookableSeats = (availableSeats >= userOpenSlots) ? userOpenSlots : availableSeats;
+            var returnObject= new Preview
+            {
+                Showing = thisShowing,
+                BookableSeats = bookableSeats
+            };
+            return returnObject;
         }
     }
 }
