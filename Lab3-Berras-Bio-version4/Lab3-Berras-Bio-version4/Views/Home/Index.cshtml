@@ -1,5 +1,8 @@
 ﻿@model HomeViewModel
-
+@{
+    var shows = @Model.Showings;
+    var orderedShows=shows.OrderByDescending(showing => showing.Auditorium.AvailableSeats-showing.OccupiedSeats);
+}
 
 <!-- Page Content -->
 <div class="container">
@@ -12,7 +15,7 @@
     </h1>
     <div class="row">
         <div class="row">
-            @foreach (var showing in Model.Showings)
+            @foreach (var showing in orderedShows)
             {
                 <div class="col-lg-4 col-sm-6 mb-4">
                     <div class="card h-100">
@@ -28,19 +31,19 @@
                             {
                                 <h4 class="float-left">
                                     Open seats: @(showing.Auditorium.AvailableSeats - showing.OccupiedSeats)
-                                    <br />
+                                    <br/>
                                 </h4>
-                                <br />
-                                <br />
+                                <br/>
+                                <br/>
                                 if (SignInManager.IsSignedIn(User))
                                 {
                                     <form asp-controller="Ticket" asp-action="OnPostBookingPreview" asp-route-showingId="@showing.Id" method="post">
-                                    <button class="btn-success">Book now!</button>
-                                </form>
+                                        <button class="btn-success">Book now!</button>
+                                    </form>
                                 }
                                 else
                                 {
-                                    <form asp-area="Identity" asp-page="/Account/Login" >
+                                    <form asp-area="Identity" asp-page="/Account/Login">
                                         <button class="btn-primary">Log in to book!!</button>
                                     </form>
                                 }
