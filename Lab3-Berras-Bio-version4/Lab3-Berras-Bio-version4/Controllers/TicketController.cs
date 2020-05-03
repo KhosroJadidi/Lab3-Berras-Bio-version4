@@ -1,4 +1,5 @@
-﻿using Lab3_Berras_Bio_version4.Models;
+﻿using System.Collections.Generic;
+using Lab3_Berras_Bio_version4.Models;
 using Lab3_Berras_Bio_version4.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -54,20 +55,34 @@ namespace Lab3_Berras_Bio_version4.Controllers
             _appDbContext.SaveChanges();
             return View();
         }
-
-        public ViewResult OnPostGetUserTickets()
+#nullable enable
+        public ViewResult OnPostGetUserTickets(string? orderBy)
         {
-            var ticketViewModel = new TicketViewModel
+            switch (orderBy)
             {
-                Tickets = _appDbContext.Tickets
-                    .Include(ticket => ticket.Showing)
-                    .Include(ticket => ticket.Showing.Movie)
-                    .Include(ticket => ticket.Showing.Auditorium)
-                    .Where(ticket => ticket.User.UserName == GetThisUser().UserName)
-            };
-            return View(ticketViewModel);
+                case "date":
+                    var homeViewModelOrderedByDate = new TicketViewModel
+                    {
+                        Tickets = GetAllTickets()
+                            .OrderBy(ticket=>ticket.Showing.StartHour.Date)
+                    };
+                    return View(homeViewModelOrderedByDate);
+                case "seats":
+                    var homeViewModelOrderedBySeats = new TicketViewModel
+                    {
+                        Tickets = GetAllTickets()
+                            .OrderByDescending(ticket => ticket.Showing.Auditorium.AvailableSeats-ticket.Showing.OccupiedSeats)
+                    };
+                    return View(homeViewModelOrderedBySeats);
+                default:
+                    var homeViewModel = new TicketViewModel
+                    {
+                        Tickets = GetAllTickets()
+                    };
+                    return View(homeViewModel);
+            }
         }
-
+#nullable  disable
         [HttpPost]
         public ActionResult OnPostRemoveBooking(int ticketId)
         {
@@ -108,6 +123,15 @@ namespace Lab3_Berras_Bio_version4.Controllers
                 BookableSeats = bookableSeats
             };
             return returnObject;
+        }
+
+        private IEnumerable<Ticket> GetAllTickets()
+        {
+            return _appDbContext.Tickets
+                .Include(ticket => ticket.Showing)
+                .Include(ticket => ticket.Showing.Movie)
+                .Include(ticket => ticket.Showing.Auditorium)
+                .Where(ticket => ticket.User.UserName == GetThisUser().UserName);
         }
     }
 }

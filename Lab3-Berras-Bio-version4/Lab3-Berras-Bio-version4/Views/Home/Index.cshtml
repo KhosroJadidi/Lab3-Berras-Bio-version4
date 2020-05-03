@@ -14,8 +14,9 @@
         <small>Quality Movies</small>
     </h1>
     <div class="row">
+        <partial name="_OrderByForIndex"/>
         <div class="row">
-            @foreach (var showing in orderedShows)
+            @foreach (var showing in @Model.Showings)
             {
                 <div class="col-lg-4 col-sm-6 mb-4">
                     <div class="card h-100">
